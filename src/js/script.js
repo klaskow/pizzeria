@@ -62,6 +62,9 @@
       thisProduct.data = data
 
       thisProduct.renderInMenu()
+      thisProduct.getElements()
+      thisProduct.initOrderForm()
+      thisProduct.processOrder()
       thisProduct.initAccordion()
       // console.log('new Product: ', thisProduct);
     }
@@ -82,13 +85,32 @@
       menuContainer.appendChild(thisProduct.element)
     }
 
+    getElements() {
+      const thisProduct = this
+
+      thisProduct.accordionTrigger = thisProduct.element.querySelector(
+        select.menuProduct.clickable
+      )
+      thisProduct.form = thisProduct.element.querySelector(
+        select.menuProduct.form
+      )
+      thisProduct.formInputs = thisProduct.form.querySelectorAll(
+        select.all.formInputs
+      )
+      thisProduct.cartButton = thisProduct.element.querySelector(
+        select.menuProduct.cartButton
+      )
+      thisProduct.priceElem = thisProduct.element.querySelector(
+        select.menuProduct.priceElem
+      )
+      // console.log('getElements', thisProduct)
+    }
+
     initAccordion() {
       const thisProduct = this
 
       /* find the clickable trigger (the element that should react to clicking) */
-      const trigger = thisProduct.element.querySelector(
-        select.menuProduct.clickable
-      )
+      const trigger = thisProduct.accordionTrigger
 
       /* START: click event listener to trigger */
       trigger.addEventListener('click', function(e) {
@@ -118,19 +140,47 @@
         /* END: click event listener to trigger */
       })
     }
+
+    initOrderForm() {
+      const thisProduct = this
+
+      thisProduct.form.addEventListener('submit', function(e) {
+        e.preventDefault()
+        thisProduct.processOrder()
+      })
+
+      for (let input of thisProduct.formInputs) {
+        input.addEventListener('change', function() {
+          thisProduct.processOrder()
+        })
+      }
+
+      thisProduct.cartButton.addEventListener('click', function(e) {
+        e.preventDefault()
+        thisProduct.processOrder()
+      })
+    }
+
+    processOrder() {
+      const thisProduct = this
+
+      /* find all and return only selected order options  */
+      const formData = utils.serializeFormToObject(thisProduct.form)
+      // console.log('formData', formData)
+    }
   }
 
   const app = {
+    initData: function() {
+      const thisApp = this
+
+      thisApp.data = dataSource
+    },
     initMenu: function() {
       const thisApp = this
       for (let productData in thisApp.data.products) {
         new Product(productData, thisApp.data.products[productData])
       }
-    },
-    initData: function() {
-      const thisApp = this
-
-      thisApp.data = dataSource
     },
     init: function() {
       const thisApp = this
