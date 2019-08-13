@@ -164,9 +164,18 @@
     processOrder() {
       const thisProduct = this
 
-      /* find all and return only selected order options  */
       const formData = utils.serializeFormToObject(thisProduct.form)
-      // console.log('formData', formData)
+      const paramsData = thisProduct.data.params
+      const price = thisProduct.data.price
+
+      for (let paramId in paramsData) {
+        for (let optionId in paramsData[paramId].options) {
+          console.group()
+          console.log(paramId)
+          console.log(paramsData[paramId].options)
+          console.groupEnd()
+        }
+      }
     }
   }
 
