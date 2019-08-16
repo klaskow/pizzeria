@@ -1,21 +1,21 @@
 /* global Handlebars */
 
-const utils = {} // eslint-disable-line no-unused-vars
+const utils = {}; // eslint-disable-line no-unused-vars
 
 utils.createDOMFromHTML = function(htmlString) {
-  let div = document.createElement('div')
-  div.innerHTML = htmlString.trim()
-  return div.firstChild
-}
+  let div = document.createElement('div');
+  div.innerHTML = htmlString.trim();
+  return div.firstChild;
+};
 
 utils.createPropIfUndefined = function(obj, key, value = []) {
   if (!Object.prototype.hasOwnProperty.call(obj, key)) {
-    obj[key] = value
+    obj[key] = value;
   }
-}
+};
 
 utils.serializeFormToObject = function(form) {
-  let output = {}
+  let output = {};
   if (typeof form == 'object' && form.nodeName == 'FORM') {
     for (let field of form.elements) {
       if (
@@ -29,23 +29,23 @@ utils.serializeFormToObject = function(form) {
         if (field.type == 'select-multiple') {
           for (let option of field.options) {
             if (option.selected) {
-              utils.createPropIfUndefined(output, field.name)
-              output[field.name].push(option.value)
+              utils.createPropIfUndefined(output, field.name);
+              output[field.name].push(option.value);
             }
           }
         } else if (
           (field.type != 'checkbox' && field.type != 'radio') ||
           field.checked
         ) {
-          utils.createPropIfUndefined(output, field.name)
-          output[field.name].push(field.value)
+          utils.createPropIfUndefined(output, field.name);
+          output[field.name].push(field.value);
         }
       }
     }
   }
-  return output
-}
+  return output;
+};
 
 Handlebars.registerHelper('ifEquals', function(arg1, arg2, options) {
-  return arg1 == arg2 ? options.fn(this) : options.inverse(this)
-})
+  return arg1 == arg2 ? options.fn(this) : options.inverse(this);
+});
