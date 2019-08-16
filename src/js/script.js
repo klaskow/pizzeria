@@ -170,15 +170,17 @@
 
       for (let paramKey in paramsData) {
         for (let optionKey in paramsData[paramKey].options) {
-          const isDefault = paramsData[paramKey].options[optionKey].default;
+          const allOptions = paramsData[paramKey].options[optionKey];
+          const isDefault = allOptions.default;
           const chosen = formData[paramKey].includes(optionKey);
           if (isDefault && !chosen) {
-            price -= paramsData[paramKey].options[optionKey].price;
+            price -= allOptions.price;
           } else if (!isDefault && chosen) {
-            price += paramsData[paramKey].options[optionKey].price;
+            price += allOptions.price;
           }
         }
       }
+      console.log(price);
     }
   }
 
