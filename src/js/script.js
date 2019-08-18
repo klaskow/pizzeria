@@ -103,7 +103,9 @@
       thisProduct.priceElem = thisProduct.element.querySelector(
         select.menuProduct.priceElem
       );
-      // console.log('getElements', thisProduct)
+      thisProduct.imageWrapper = thisProduct.element.querySelector(
+        select.menuProduct.imageWrapper
+      );
     }
 
     initAccordion() {
@@ -167,16 +169,36 @@
       const formData = utils.serializeFormToObject(thisProduct.form);
       const paramsData = thisProduct.data.params;
       let price = thisProduct.data.price;
+      const imageWrapper = thisProduct.imageWrapper;
 
       for (let paramKey in paramsData) {
         for (let optionKey in paramsData[paramKey].options) {
           const allOptions = paramsData[paramKey].options[optionKey];
           const isDefault = allOptions.default;
-          const chosen = formData[paramKey].includes(optionKey);
-          if (isDefault && !chosen) {
+          // TOFIX: last removed ingredient
+          // Cannot read property 'includes' of undefined
+          const isChosen = formData[paramKey].includes(optionKey);
+          const ingredientImgClass = `.${paramKey}-${optionKey}`;
+          const ingredientSelector = imageWrapper.querySelector(
+            ingredientImgClass
+          );
+
+          if (isDefault && !isChosen) {
             price -= allOptions.price;
-          } else if (!isDefault && chosen) {
+          } else if (!isDefault && isChosen) {
             price += allOptions.price;
+          }
+
+          if (ingredientSelector) {
+            if (isChosen) {
+              imageWrapper
+                .querySelector(ingredientImgClass)
+                .classList.add(classNames.menuProduct.imageVisible);
+            } else {
+              imageWrapper
+                .querySelector(ingredientImgClass)
+                .classList.remove(classNames.menuProduct.imageVisible);
+            }
           }
         }
       }
