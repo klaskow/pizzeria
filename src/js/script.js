@@ -227,7 +227,8 @@
           const isDefault = allOptions.default;
           // TOFIX: last removed ingredient
           // Cannot read property 'includes' of undefined
-          const isChosen = formData[paramKey].includes(optionKey);
+          const isChosen =
+            formData[paramKey] && formData[paramKey].includes(optionKey);
           const ingredientImgClass = `.${paramKey}-${optionKey}`;
           const ingredientSelector = imageWrapper.querySelector(
             ingredientImgClass
