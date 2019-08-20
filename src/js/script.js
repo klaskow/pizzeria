@@ -225,8 +225,6 @@
         for (let optionKey in paramsData[paramKey].options) {
           const allOptions = paramsData[paramKey].options[optionKey];
           const isDefault = allOptions.default;
-          // TOFIX: last removed ingredient
-          // Cannot read property 'includes' of undefined
           const isChosen =
             formData[paramKey] && formData[paramKey].includes(optionKey);
           const ingredientImgClass = `.${paramKey}-${optionKey}`;
@@ -336,8 +334,7 @@
       thisCart.products = [];
 
       thisCart.getElements(element);
-
-      console.log('new Cart', thisCart);
+      thisCart.initActions();
     }
 
     getElements(element) {
@@ -346,6 +343,17 @@
       thisCart.dom = {};
 
       thisCart.dom.wrapper = element;
+      thisCart.dom.toggleTrigger = thisCart.dom.wrapper.querySelector(
+        select.cart.toggleTrigger
+      );
+    }
+
+    initActions() {
+      const thisCart = this;
+
+      thisCart.dom.toggleTrigger.addEventListener('click', function(e) {
+        thisCart.dom.wrapper.classList.toggle(classNames.cart.wrapperActive);
+      });
     }
   }
 
