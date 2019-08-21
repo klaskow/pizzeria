@@ -275,10 +275,10 @@
     addToCart() {
       const thisProduct = this;
 
-      app.cart.add(thisProduct);
-
       thisProduct.name = thisProduct.data.name;
       thisProduct.amount = thisProduct.amountWidget.value;
+
+      app.cart.add(thisProduct);
     }
   }
 
@@ -385,7 +385,7 @@
       });
     }
 
-    // TOFIX: working second time if added twice
+    // TOFIX: missing params data
     add(menuProduct) {
       const thisCart = this;
 
