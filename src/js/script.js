@@ -84,11 +84,9 @@
     menuProduct: Handlebars.compile(
       document.querySelector(select.templateOf.menuProduct).innerHTML
     ),
-    // CODE ADDED START
     cartProduct: Handlebars.compile(
       document.querySelector(select.templateOf.cartProduct).innerHTML
     )
-    // CODE ADDED END
   };
 
   class Product {
@@ -374,6 +372,9 @@
       thisCart.dom.toggleTrigger = thisCart.dom.wrapper.querySelector(
         select.cart.toggleTrigger
       );
+      thisCart.dom.productList = thisCart.dom.wrapper.querySelector(
+        select.cart.productList
+      );
     }
 
     initActions() {
@@ -384,10 +385,21 @@
       });
     }
 
+    // TOFIX: working second time if added twice
     add(menuProduct) {
       const thisCart = this;
 
-      console.log('adding product', menuProduct);
+      /* generate HTML based on template */
+      const generatedHTML = templates.cartProduct(menuProduct);
+
+      /* generate DOM using utils.createDOMFromHTML */
+      thisCart.dom.productList = utils.createDOMFromHTML(generatedHTML);
+
+      /* find cart summary container */
+      const cartSummary = document.querySelector(select.cart.productList);
+
+      /* add element to menu */
+      cartSummary.appendChild(thisCart.dom.productList);
     }
   }
 
