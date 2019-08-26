@@ -392,14 +392,69 @@
       /* generate HTML based on template */
       const generatedHTML = templates.cartProduct(menuProduct);
 
+      const generatedDOM = utils.createDOMFromHTML(generatedHTML);
+
       /* generate DOM using utils.createDOMFromHTML */
-      thisCart.dom.productList = utils.createDOMFromHTML(generatedHTML);
+      thisCart.dom.productList = generatedDOM;
 
       /* find cart summary container */
       const cartSummary = document.querySelector(select.cart.productList);
 
       /* add element to menu */
       cartSummary.appendChild(thisCart.dom.productList);
+
+      thisCart.products.push(new CartProduct(menuProduct, generatedDOM));
+    }
+  }
+
+  class CartProduct {
+    constructor(menuProduct, element) {
+      const thisCartProduct = this;
+
+      thisCartProduct.id = menuProduct.id;
+      thisCartProduct.name = menuProduct.name;
+      thisCartProduct.price = menuProduct.price;
+      thisCartProduct.priceSingle = menuProduct.priceSingle;
+      thisCartProduct.amount = menuProduct.amount;
+      thisCartProduct.params = JSON.parse(JSON.stringify(menuProduct.params));
+
+      thisCartProduct.getElements(element);
+      // TOFIX: TypeError: Cannot read property 'querySelector' of undefined
+      //thisCartProduct.initAmountWidget();
+    }
+
+    getElements(element) {
+      const thisCartProduct = this;
+
+      thisCartProduct.dom = {};
+      thisCartProduct.dom.wrapper = element;
+      thisCartProduct.amountWidget = thisCartProduct.dom.wrapper.querySelector(
+        select.cartProduct.amountWidget
+      );
+      thisCartProduct.dom.price = thisCartProduct.dom.wrapper.querySelector(
+        select.cartProduct.price
+      );
+      thisCartProduct.dom.edit = thisCartProduct.dom.wrapper.querySelector(
+        select.cartProduct.edit
+      );
+      thisCartProduct.dom.remove = thisCartProduct.dom.wrapper.querySelector(
+        select.cartProduct.remove
+      );
+    }
+
+    initAmountWidget() {
+      const thisCartProduct = this;
+
+      thisCartProduct.amountWidget = new AmountWidget(
+        thisCartProduct.dom.amountWidget
+      );
+
+      thisCartProduct.dom.amountWidget.addEventListener('updated', function(e) {
+        thisCartProduct.amount = thisCartProduct.amountWidget.value;
+        thisCartProduct.price =
+          thisCartProduct.priceSingle * thisCartProduct.amount;
+        thisCartProduct.dom.price.innerHTML = thisCartProduct.price;
+      });
     }
   }
 
