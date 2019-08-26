@@ -356,6 +356,7 @@
   class Cart {
     constructor(element) {
       const thisCart = this;
+      thisCart.deliveryFee = settings.cart.defaultDeliveryFee;
 
       thisCart.products = [];
 
@@ -403,6 +404,21 @@
       cartSummary.appendChild(thisCart.dom.productList);
 
       thisCart.products.push(new CartProduct(menuProduct, generatedDOM));
+      thisCart.update();
+    }
+
+    update() {
+      const thisCart = this;
+
+      thisCart.totalNumber = 0;
+      thisCart.subtotalPrice = 0;
+
+      for (const product of thisCart.products) {
+        thisCart.subtotalPrice += product.price;
+        thisCart.totalNumber += product.amount;
+      }
+
+      thisCart.totalPrice = thisCart.subtotalPrice + thisCart.deliveryFee;
     }
   }
 
