@@ -240,25 +240,25 @@
             price += allOptions.price;
           }
 
-          if (ingredientSelector) {
-            if (isChosen) {
-              imageWrapper
-                .querySelector(ingredientImgClass)
-                .classList.add(classNames.menuProduct.imageVisible);
+          if (ingredientSelector && isChosen) {
+            imageWrapper
+              .querySelector(ingredientImgClass)
+              .classList.add(classNames.menuProduct.imageVisible);
+          } else if (ingredientSelector) {
+            imageWrapper
+              .querySelector(ingredientImgClass)
+              .classList.remove(classNames.menuProduct.imageVisible);
+          }
 
-              if (!thisProduct.params[paramKey]) {
-                thisProduct.params[paramKey] = {
-                  label: paramsData[paramKey].label,
-                  options: {}
-                };
-              }
-              thisProduct.params[paramKey].options[optionKey] =
-                paramsData[paramKey].options[optionKey].label;
-            } else {
-              imageWrapper
-                .querySelector(ingredientImgClass)
-                .classList.remove(classNames.menuProduct.imageVisible);
+          if (isChosen) {
+            if (!thisProduct.params[paramKey]) {
+              thisProduct.params[paramKey] = {
+                label: paramsData[paramKey].label,
+                options: {}
+              };
             }
+            thisProduct.params[paramKey].options[optionKey] =
+              paramsData[paramKey].options[optionKey].label;
           }
         }
       }
@@ -385,7 +385,6 @@
       });
     }
 
-    // TOFIX: missing params data
     add(menuProduct) {
       const thisCart = this;
 
@@ -419,8 +418,7 @@
       thisCartProduct.params = JSON.parse(JSON.stringify(menuProduct.params));
 
       thisCartProduct.getElements(element);
-      // TOFIX: TypeError: Cannot read property 'querySelector' of undefined
-      //thisCartProduct.initAmountWidget();
+      thisCartProduct.initAmountWidget();
     }
 
     getElements(element) {
@@ -428,7 +426,7 @@
 
       thisCartProduct.dom = {};
       thisCartProduct.dom.wrapper = element;
-      thisCartProduct.amountWidget = thisCartProduct.dom.wrapper.querySelector(
+      thisCartProduct.dom.amountWidget = thisCartProduct.dom.wrapper.querySelector(
         select.cartProduct.amountWidget
       );
       thisCartProduct.dom.price = thisCartProduct.dom.wrapper.querySelector(
@@ -478,11 +476,6 @@
     },
     init: function() {
       const thisApp = this;
-      // console.log('*** App starting ***');
-      // console.log('thisApp:', thisApp);
-      // console.log('classNames:', classNames);
-      // console.log('settings:', settings);
-      // console.log('templates:', templates);
       thisApp.initData();
       thisApp.initMenu();
       thisApp.initCart();
