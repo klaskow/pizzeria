@@ -406,7 +406,6 @@
       thisCart.dom.productList.addEventListener('remove', function(event) {
         thisCart.remove(event.detail.cartProduct);
       });
-      console.log(thisCart);
     }
 
     add(menuProduct) {
@@ -418,13 +417,13 @@
       const generatedDOM = utils.createDOMFromHTML(generatedHTML);
 
       /* generate DOM using utils.createDOMFromHTML */
-      thisCart.dom.productList = generatedDOM;
+      thisCart.dom.element = generatedDOM;
 
       /* find cart summary container */
       const cartSummary = document.querySelector(select.cart.productList);
 
       /* add element to menu */
-      cartSummary.appendChild(thisCart.dom.productList);
+      cartSummary.appendChild(thisCart.dom.element);
 
       thisCart.products.push(new CartProduct(menuProduct, generatedDOM));
       thisCart.update();
@@ -454,8 +453,7 @@
       const thisCart = this;
       const index = thisCart.products.indexOf(cartProduct);
       thisCart.products.splice(index, 1);
-      // TOFIX: sync with dom not working
-      thisCart.dom.productList.firstChild.innerHTML = '';
+      thisCart.dom.productList.removeChild(cartProduct.dom.wrapper);
       thisCart.update();
     }
   }
