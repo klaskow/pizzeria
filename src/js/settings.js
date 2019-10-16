@@ -10,7 +10,8 @@ export const select = {
     menu: '#product-list',
     cart: '#cart',
     pages: '#pages',
-    booking: '.booking-wrapper'
+    booking: '.booking-wrapper',
+    nav: '.main-nav'
   },
   all: {
     menuProducts: '#product-list > .product',
@@ -64,10 +65,10 @@ export const select = {
       peopleAmount: '.people-amount',
       hoursAmount: '.hours-amount',
       tables: '.floor-plan .table'
-    },
-    nav: {
-      links: '.main-nav a'
     }
+  },
+  nav: {
+    links: '.main-nav a'
   }
   // CODE ADDED END
 };
